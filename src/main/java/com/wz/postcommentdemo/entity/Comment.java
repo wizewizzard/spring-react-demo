@@ -37,7 +37,7 @@ public class Comment {
     @Column(name = "published_at", nullable = false)
     private LocalDateTime publishedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     @Getter
     @Setter

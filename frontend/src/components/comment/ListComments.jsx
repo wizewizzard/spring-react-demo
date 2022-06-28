@@ -12,15 +12,14 @@ export default function ListComments(props) {
     const [comments, setComments] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [updated, setUpdated] = useState(false);
+    const [updated, setUpdated] = useState(true);
     const [serverError, setServerError] = useState(false);
 
     useEffect(() => {
         fetchComments();
-    },[updated, page]);
+    },[page, updated]);
 
     const fetchComments = async () => {
-        console.log('Fetching comments for page ', page);
         const response = await CommentService.getCommentsByPostId(postId, {page: page - 1, size: pageSize});
         if(response.status >= 200 && response.status < 300){
             const data = await response.json();
