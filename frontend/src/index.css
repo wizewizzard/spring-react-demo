@@ -1,0 +1,54 @@
+html, body, #root{
+  margin: 0;
+  padding: 0;
+  min-height: 100%; /* needed for container min-height */
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.navbar-text{
+  font-size: large;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.nav-item{
+  font-size: medium;
+  font-weight: lighter;
+}
+
+.post-brief{
+  height: 200px;
+}
+
+.scaled{
+  height:auto;
+  width: 100%;
+}
+
+.flowed-from-right{
+  float: left;
+  margin: 7px 7px 7px 0;
+}
+
+.page-item.active .page-link{
+  background-color: #ccc !important;
+  border-color: #ccc !important;
+  color: black !important;  
+}
+
+.page-item .page-link{
+  color: black !important;  
+}
