@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: post-comment-demo
+  datasource:
+    url: jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  web:
+    resources:
+      static-locations: file:/public, classpath:/static/
+
+server:
+  port: 8080
+
+uploads:
+  imageUploads:
+    thumbs-size: 300
+    uploadDir: public/uploads/images
+    path: uploads/images
