@@ -156,7 +156,7 @@ export default function EditPost() {
                       </div>
                     </div>) 
                     }
-                    <input type='file'  accept="image/png, image/gif, image/jpeg" name='image' 
+                    <input type='file'  accept="image/jpeg" name='image' 
                     className='form-control' onChange={onChangeFile} />
                   </div>
                   <button type="sumbit" className='btn btn-outline-success' 
