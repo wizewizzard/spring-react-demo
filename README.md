@@ -3,11 +3,17 @@
 ### What it is?
 This is a single-paged-application driven by the spring framework on the backend and the React.js on the frontend.
 A basic post-comment domain is used. No authentication and authorization is involved. Just wanted to test out 
-how spring and react combination works.
+how spring and react combination works. Here is a couple of screenshots what it looks like.
+
+[posts listing page](./img1.png)
+
+[the post page](./img2.png)
+
+[comment section](./img3.png)
 #### Why no authentication used? 
 Mainly because it was not the point of the study, and secondly I don't yet know React.js good enough to perform that.
 Certainly this is going to be one of the points I will address in another studies I will do later.
-#### Database?
+#### Database?!
 An inmemory H2 database is used.
 ### Challenges I encountered
 #### Building the application
