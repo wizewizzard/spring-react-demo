@@ -29,20 +29,18 @@ public class PostServiceImpl implements PostService{
 
     private final UploadsProperties uploadsProperties;
     private final PostRepository postRepository;
-
-    private final FileUpload fileUploader;
-
+    private final FileUpload fileUpload;
     private final ImageProcess imageProcess;
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            UploadsProperties uploadsProperties,
-                           FileUpload fileUploader,
-                           ImageProcess imageProcess) {
+                           ImageProcess imageProcess,
+                           FileUpload fileUpload) {
         this.postRepository = postRepository;
-        this.fileUploader = fileUploader;
         this.imageProcess = imageProcess;
         this.uploadsProperties = uploadsProperties;
+        this.fileUpload = fileUpload;
     }
 
     @Override
@@ -57,8 +55,8 @@ public class PostServiceImpl implements PostService{
             String uploadDirectory = uploadsProperties.getImageUploads().getUploadDir();
             BufferedImage orig = ImageIO.read(image.getInputStream());
             BufferedImage thumb = imageProcess.scaleImage(orig, uploadsProperties.getImageUploads().getThumbsSize());
-            saveImage(uploadDirectory + "/" + saved.getId(), originalFilename, orig);
-            saveImage(uploadDirectory + "/" + saved.getId() + "/thumbs", originalFilename, thumb);
+            imageProcess.saveImage(uploadDirectory + "/" + saved.getId(), originalFilename, orig);
+            imageProcess.saveImage(uploadDirectory + "/" + saved.getId() + "/thumbs", originalFilename, thumb);
         }
         catch(IOException | FileException exc){
             log.error("File was not saved. ", exc);
@@ -80,12 +78,12 @@ public class PostServiceImpl implements PostService{
             if(image != null && !image.isEmpty()){
                 try {
                     String uploadDirectory = uploadsProperties.getImageUploads().getUploadDir();
-                    fileUploader.deleteFiles(uploadDirectory + "/" + post.getId(), post.getImage());
-                    fileUploader.deleteFiles(uploadDirectory + "/" + post.getId() + "/thumbs", post.getImage());
+                    fileUpload.deleteFiles(uploadDirectory + "/" + post.getId(), post.getImage());
+                    fileUpload.deleteFiles(uploadDirectory + "/" + post.getId() + "/thumbs", post.getImage());
                     BufferedImage orig = ImageIO.read(image.getInputStream());
                     BufferedImage thumb = imageProcess.scaleImage(orig, uploadsProperties.getImageUploads().getThumbsSize());
-                    saveImage(uploadDirectory + "/" + post.getId(), image.getOriginalFilename(), orig);
-                    saveImage(uploadDirectory + "/" + post.getId() + "/thumbs", image.getOriginalFilename(), thumb);
+                    imageProcess.saveImage(uploadDirectory + "/" + post.getId(), image.getOriginalFilename(), orig);
+                    imageProcess.saveImage(uploadDirectory + "/" + post.getId() + "/thumbs", image.getOriginalFilename(), thumb);
                 } catch (IOException | FileException exc) {
                     log.error("Could not delete image when updating the post ", exc);
                     throw new FileException(exc.getMessage(), exc);
@@ -118,8 +116,8 @@ public class PostServiceImpl implements PostService{
             Post post = postOptional.get();
             try {
                 String uploadDirectory = uploadsProperties.getImageUploads().getUploadDir();
-                fileUploader.deleteDirectoryWithFiles(uploadDirectory + "/" + post.getId() + "/thumbs");
-                fileUploader.deleteDirectoryWithFiles(uploadDirectory + "/" + post.getId());
+                fileUpload.deleteDirectoryWithFiles(uploadDirectory + "/" + post.getId() + "/thumbs");
+                fileUpload.deleteDirectoryWithFiles(uploadDirectory + "/" + post.getId());
             } catch (FileException exc) {
                 log.error("Directory can not be deleted for the post. ", exc);
                 throw new FileException(exc.getMessage(), exc);
@@ -129,18 +127,5 @@ public class PostServiceImpl implements PostService{
         else{
             throw new ResourceNotFoundException("Post with this id was not found");
         }
-    }
-
-    private void saveImage(String directory, String filename, BufferedImage image){
-        fileUploader.saveFile(
-                directory,
-                filename,
-                (File outputFile) -> {
-                    try {
-                        ImageIO.write(image, "jpg", outputFile);
-                    } catch (IOException e) {
-                        throw new FileException("Error while saving image to %s".formatted(outputFile.getPath()),e);
-                    }
-                });
     }
 }
