@@ -1,5 +1,9 @@
 # Spring and React cats 
 ## Overview
+### Tech stack
+**Client:** React
+
+**Server:** Spring boot, Hibernate
 ### What it is?
 This is a single-paged-application driven by the spring framework on the backend and the React.js on the frontend.
 A basic post-comment domain is used. No authentication and authorization is involved. Just wanted to test out 
@@ -42,14 +46,7 @@ transfer redundant data. But to save some time I've made this decision.
 ``@RestControllerAdvice`` handles exceptions services or controllers fire. Among those exceptions ``MethodArgumentNotValidException``
 can be handled. Handler converts validation errors into a map, where key is name of the field and values is a list of violations for this field. 
 And responds with a `BAD_REQUEST` and marshalled errors.
-```
-        return exception.getBindingResult().getAllErrors()
-                .stream()
-                .collect(Collectors.toMap(error -> ((FieldError) error).getField(),
-                        error -> List.of(error.getDefaultMessage()),
-                        (l1, l2) -> Stream.concat(l1.stream(), l2.stream()).collect(Collectors.toList())
-                ));
-```
+
 React application receives the `BAD_REQUEST` code, uses hook to update component's state 
 and renders violations above fields where the mistake was made with ``<Errors ... />`` component. Server errors
 are processed the same way.
